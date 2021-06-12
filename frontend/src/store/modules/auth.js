@@ -20,8 +20,8 @@ const actions = {
     await dispatch('LogIn', UserForm)
   },
 
-  async LogIn({commit}, user) {
-    await axios.post("login", user);
+  async LogIn({commit}, user) {        
+    await axios.post("login", user);  
     await commit("setUser", user.get("username"));
   },
 

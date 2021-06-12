@@ -2,7 +2,7 @@ const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 
-let authentication = function (req, res, next) {
+let authentication = function (req, res, next) {    
     User.find({ name: req.body.name, password: req.body.password })
         .then(user => {
             if (user) {
@@ -10,9 +10,9 @@ let authentication = function (req, res, next) {
                 const token = jwt.sign({ id }, process.env.SECRET, {
                     expiresIn: 300
                 })
-                res.json({ auth: true, token: token });
+                return res.json({ auth: true, token: token });
             }
-            res.status(500).json({ message: 'Login inválido!' });
+            return res.status(500).json({ message: 'Login inválido!' });
         }).catch(next);
 };
 

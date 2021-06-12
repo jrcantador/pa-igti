@@ -4,7 +4,7 @@
       <form @submit.prevent="submit">
         <div>
           <label for="username">Username:</label>
-          <input type="text" name="username" v-model="form.username" />
+          <input type="text" name="name" v-model="form.username" />
         </div>
         <div>
           <label for="password">Password:</label>
@@ -37,7 +37,7 @@ export default {
       const User = new FormData();
       User.append("username", this.form.username);
       User.append("password", this.form.password);
-      try {
+      try {        
         await this.LogIn(User);
         this.$router.push("/posts");
         this.showError = false;

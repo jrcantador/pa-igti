@@ -4,8 +4,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 
-axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'https://localhost:8080/';
+axios.defaults.baseURL = 'http://localhost:5000/api';
 
 axios.interceptors.response.use(undefined, function (error) {
   if (error) {
