@@ -1,6 +1,7 @@
+const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
-function validationToken(req, res, next) {
+const validationToken = (req, res, next) => {
     const token = req.headers['x-access-token'];
     if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
 
@@ -12,4 +13,18 @@ function validationToken(req, res, next) {
     });
 }
 
-module.exports = { validationToken };
+const authentication = (req, res, next) => {
+    User.find({ name: req.body.name, password: req.body.password })
+        .then(user => {
+            if (user) {
+                const id = user.id;
+                const token = jwt.sign({ id }, process.env.SECRET, {
+                    expiresIn: 5000
+                })
+                return res.json({ auth: true, token: token });
+            }
+            return res.status(500).json({ message: 'Login inválido!' });
+        }).catch(next);
+};
+
+module.exports = { validationToken, authentication };

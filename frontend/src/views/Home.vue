@@ -1,13 +1,62 @@
 <template>
   <div class="home">
-  <p>Heyyyyyy welcome to our blog, check out our posts</p>
+    <DatatableComponent :columns="columns" :rows="rows" />
   </div>
 </template>
 <script>
+import DatatableComponent from "../components/form/DatatableComponent.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-  }
-}
+    DatatableComponent,
+  },
+  data: () => {
+    return {
+      columns: [
+        { label: "id", field: "id" },
+        {
+          label: "Username",
+          field: "user.username",
+          headerClass: "class-in-header second-class",
+        },
+        { label: "First Name", field: "user.firstName" },
+        { label: "Last Name", field: "user.lastName" },
+        { label: "Email", field: "user.email" },
+        {
+          label: "Address",
+          representedAs: ({ address, city, state }) =>
+            `${address}<br />${city}, ${state}`,
+          interpolate: true,
+        },
+      ],
+      rows: [
+        {
+          id: 1,
+          user: {
+            username: "dprice0",
+            firstName: "Daniel",
+            lastName: "Price",
+            email: "dprice0@blogs.com",
+          },
+          address: "3 Toban Park",
+          city: "Pocatello",
+          state: "Idaho",
+        },
+         {
+          id: 2,
+          user: {
+            username: "bunda",
+            firstName: "Daniel",
+            lastName: "Price",
+            email: "dprice0@blogs.com",
+          },
+          address: "3 Toban Park",
+          city: "Pocatello",
+          state: "Idaho",
+        },
+      ],
+    };
+  },
+};
 </script>

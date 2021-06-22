@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import { VuejsDatatableFactory} from 'vuejs-datatable';
+ 
+Vue.use( VuejsDatatableFactory );
+
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
