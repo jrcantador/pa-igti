@@ -13,17 +13,17 @@ const validationToken = (req, res, next) => {
     });
 }
 
-const authentication = (req, res, next) => {
-    User.find({ name: req.body.name, password: req.body.password })
-        .then(user => {
-            if (user) {
+const authentication = (req, res, next) => {                    
+    User.find({ email: req.body.email, password: req.body.password })        
+        .then(user => {  
+            if (user.length > 0) {                              
                 const id = user.id;
                 const token = jwt.sign({ id }, process.env.SECRET, {
                     expiresIn: 5000
-                })
+                })                
                 return res.json({ auth: true, token: token });
-            }
-            return res.status(500).json({ message: 'Login inválido!' });
+            }           
+            throw new Error('Login inválido');        
         }).catch(next);
 };
 

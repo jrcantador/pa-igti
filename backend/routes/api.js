@@ -8,7 +8,7 @@ const multer = require('../lib/multer');
 
 // User
 router.get('/user', authService.validationToken, userController.find);
-router.post('/user', authService.validationToken, userController.create);
+router.post('/user', userController.create);
 router.put('/user/:id', authService.validationToken, userController.update);
 router.delete('/user/:id', authService.validationToken, userController.remove);
 

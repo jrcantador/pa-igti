@@ -3,25 +3,18 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
-import { VuejsDatatableFactory} from 'vuejs-datatable';
- 
-Vue.use( VuejsDatatableFactory );
+import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
+import VueTheMask from 'vue-the-mask'
+
+
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
+Vue.use(VueTheMask)
+Vue.use(BootstrapVue);
 
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
-
-axios.interceptors.response.use(undefined, function (error) {
-  if (error) {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-  
-        originalRequest._retry = true;
-        store.dispatch('LogOut')
-        return router.push('/login')
-    }
-  }
-})
-
 
 new Vue({
   store,

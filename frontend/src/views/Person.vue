@@ -1,17 +1,16 @@
 <template>
   <div class="home">
-    {{ person }}
+    
   </div>
 </template>
 <script>
+
 export default {
-  name: "Home",
+  name: "Person",  
   data: () => {
-    return {
-      person: "",
+    return {            
+    
     };
   },
-  methods: {},
-  beforeMount() {},
 };
 </script>

@@ -21,6 +21,7 @@ let remove = function (req, res, next) {
 };
 
 let create = function (req, res, next) {
+    console.log("aqui")
     User.create(req.body).then((user) => {
         res.send(user);
     }).catch(next);

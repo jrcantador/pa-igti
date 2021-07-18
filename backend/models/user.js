@@ -3,17 +3,14 @@ const Schema = mongoose.Schema;
 const User = new Schema({
     name: {
         type: String,
-        required: [true, '*Campo obrigatório!']
+        required: [true, '* Campo obrigatório!']
     },    
     document: {
         type: String,
-        required: [true, "Campo obrigatório"]
+        required: [true, "* Campo obrigatório"]
     },
-    adress: {
+    address: {
         type: String,
-    },
-    number: {
-        type: Number,
     },
     postal_code: {
         type: String
@@ -28,16 +25,17 @@ const User = new Schema({
     },
     email: {
         type: String,
-        required: [true, '*Campo obrigatório!']
+        required: [true, '* Campo obrigatório!']
     },
     password: {
         type: String,
-        required: [true, '*Campo obrigatório!']
+        required: [true, '* Campo obrigatório!']
     },
     role: {
         type: String,
-        required: [true, '*Campo obrigatório!']
+        required: [true, '* Campo obrigatório!'],
+        default: 'user'
     }
 });
-const user = mongoose.model('user', User);
+const user = mongoose.model('User', User, 'user');
 module.exports = user;
