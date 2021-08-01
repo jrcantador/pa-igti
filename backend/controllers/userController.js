@@ -20,8 +20,7 @@ let remove = function (req, res, next) {
     }).catch(next);
 };
 
-let create = function (req, res, next) {
-    console.log("aqui")
+let create = function (req, res, next) {    
     User.create(req.body).then((user) => {
         res.send(user);
     }).catch(next);

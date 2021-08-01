@@ -1,7 +1,9 @@
 const Person = require('../models/person');
 
-let find = (query) => {
-    return Person.find(query);
+let find = (filters, sortField, sortKey) => {
+    const sort = {}
+    sort[sortField] = sortKey;
+    return Person.find(filters, null, { sort: sort});
 };
 
 let update = (id, body) => {
@@ -16,5 +18,9 @@ let create = (body) => {
     return Person.create(body);
 };
 
+let count = (body) => {
+    return Person.countDocuments(body);
+}
 
-module.exports = { find, update, remove, create };
+
+module.exports = { find, update, remove, create, count };

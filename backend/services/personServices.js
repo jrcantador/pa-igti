@@ -12,9 +12,13 @@ const remove = (id) => {
     return personRepository.remove(id);
 }
 
-const find = (query) => {
-    return personRepository.find(query);
+const find = (filters, sortField, sortKey) => {
+    return personRepository.find(filters, sortField, sortKey);
 
 }
 
-module.exports = { find, update, remove, create };
+const count = (filters, orders) =>{
+    return personRepository.count(filters, orders);
+}
+
+module.exports = { find, update, remove, create, count};

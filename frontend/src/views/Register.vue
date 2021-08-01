@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div class="container">    
     <div>
-      <form @submit="checkForm">
+      <form novalidate>
         <div v-if="errors.length" class="alert alert-warning" role="alert">
           <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
           <ul>
@@ -108,7 +108,13 @@
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-5">Cadastrar</button>
+        <button
+          type="button"
+          @click.prevent="checkForm()"
+          class="btn btn-primary mt-5"
+        >
+          Cadastrar
+        </button>
       </form>
     </div>
     <p v-if="showError" id="error">Username already exists</p>
@@ -116,29 +122,37 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import axios from "axios";
+
 export default {
   name: "Register",
   components: {},
+  props: ['row'],
   data() {
     return {
       form: {},
       showError: false,
-      errors: [],
+      errors: []      
     };
   },
   methods: {
-    ...mapActions(["Register"]),
     async submit() {
-      try {
-        this.form.city = { id: this.form.city };
-        await this.Register(this.form);
-        this.showError = false;
-      } catch (error) {
-        this.showError = true;
-      }
+      this.form.city = { id: this.form.city };
+      axios
+        .post("user", this.form)
+        .then((response) => {
+          this.showError = false;
+          let UserForm = new FormData();
+          UserForm.append("email", response.email);
+          UserForm.append("password", response.password);
+          this.$router.push("/login");
+        })
+        .catch((error) => {
+          this.errors.push(error);
+          this.showError = true;
+        });
     },
-    checkForm: function(e) {
+    checkForm: function() {
       this.errors = [];
 
       if (!this.form.name) {
@@ -146,7 +160,7 @@ export default {
       }
       if (!this.form.email) {
         this.errors.push("O e-mail é obrigatório.");
-      } else if (!this.validEmail(this.email)) {
+      } else if (!this.validEmail(this.form.email)) {
         this.errors.push("Utilize um e-mail válido.");
       }
 
@@ -163,10 +177,8 @@ export default {
       }
 
       if (!this.errors.length) {
-        return true;
+        return this.submit();
       }
-
-      e.preventDefault();
     },
 
     validEmail: function(email) {

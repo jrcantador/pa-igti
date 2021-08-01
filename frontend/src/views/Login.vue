@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import axios from "axios";
 export default {
   name: "Login",
   components: {},
@@ -32,18 +32,22 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["LogIn"]),
     async submit() {
-      const User = new FormData();
-      User.append("email", this.form.email);
-      User.append("password", this.form.password);
-      try {        
-        await this.LogIn(User);
-        this.$router.push("/home");
-        this.showError = false;
-      } catch (error) {
-        this.showError = true;
-      }
+      const info = {
+        email: this.form.email,
+        password: this.form.password,
+      };
+      axios
+        .post("login", info)
+        .then((res) => {
+          this.$store.commit("setUser", res.data);
+          this.$store.commit("setToken", res.data.token);
+          this.$router.push("/home");
+          this.showError = false;
+        })
+        .catch((error) => {
+          this.showError = true;
+        });
     },
   },
 };
