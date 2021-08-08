@@ -1,5 +1,4 @@
 const personService = require("../services/personServices");
-const fileHelper = require("../lib/file-helper");
 
 let find = function (req, res, next) {
   personService
@@ -59,24 +58,26 @@ let dataTable = function (req, res, next) {
     .catch(next);
 };
 
-let uploadImagem = function (req, res, next) {
-  // Se houve sucesso no armazenamento
-  if (req.file) {
-    // Vamos mandar essa imagem para compressão antes de prosseguir
-    // Ela vai retornar o a promise com o novo caminho como resultado, então continuamos com o then.
-    fileHelper
-      .compressImage(req.file, 100)
-      .then((newPath) => {
-        // Vamos continuar normalmente, exibindo o novo caminho
-        return res.send(
-          "Upload e compressão realizados com sucesso! O novo caminho é:" +
-            newPath
-        );
-      })
-      .catch((err) => console.log(err));
-  }
-
-  return res.send("Houve erro no upload!");
+let imageUpload = function (req, res, next) {
+  const image = req.file;  
+  personService
+    .find({ _id: req.body.id })
+    .then((data) => {      
+      data[0].image_id = image.filename;
+      const query = removeKey(data[0], '_id');      
+      personService
+        .update(req.body.id, query)
+        .then((data) => {          
+          res.json({ file: image });
+        })
+        .catch(next);
+    })
+    .catch(next);
 };
 
-module.exports = { find, update, remove, create, uploadImagem, dataTable };
+const removeKey = (obj, propToDelete) => {
+  const { [propToDelete]: deleted, ...objectWithoutDeletedProp } = obj;  
+  return objectWithoutDeletedProp;
+};
+
+module.exports = { find, update, remove, create, imageUpload, dataTable };

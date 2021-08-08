@@ -4,10 +4,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-var cors = require('cors')
+
+let cors = require('cors')
 require("dotenv-safe").config();
 
 app.use(cors())
+app.use( express.static( "uploads" ) );
+
 
 let port = 5000;
 app.use(bodyParser.json());

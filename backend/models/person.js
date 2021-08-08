@@ -10,7 +10,7 @@ const Person = new Schema({
     required: [true, "Campo obrigatório"],
   },
   locality: {
-    adress: {
+    address: {
       type: String,
     },
     number: {
@@ -57,7 +57,7 @@ const Person = new Schema({
       type: Number,
     },
     disabled_person: {
-      type: Boolean,
+      type: String,
     },
     others: {
       type: String,

@@ -18,6 +18,7 @@
                 name="name"
                 v-model="form.name"
               />
+              {{ this.form.name }}
             </div>
           </div>
           <div class="col-4">
@@ -69,7 +70,9 @@
             <div class="form-group">
               <label for="city">Estado:</label>
               <select v-model="form.state" class="form-select">
-                <option v-bind:value="{id: 1, name: 'São Paulo'}">São Paulo</option>
+                <option v-bind:value="{ id: 1, name: 'São Paulo' }"
+                  >São Paulo</option
+                >
               </select>
             </div>
           </div>
@@ -219,30 +222,75 @@ export default {
   methods: {
     async submit() {
       this.handlingInformation();
-      console.log(this.form);
-      axios
-        .post("person", this.form)
-        .then((response) => {
-          this.$router.push("/home");
-          this.$toast.success('Pessoa cadastrada com sucesso!');
-        })
-        .catch((error) => {
-          this.errors.push(error);
-          this.showError = true;
-        });
+
+      if (this.$route.params.id) {
+        axios
+          .put(`person/${this.$route.params.id}`, this.form)
+          .then((response) => {
+            this.$router.push("/persons");
+            this.$toast.success("Pessoa atualizada com sucesso!");
+          })
+          .catch((error) => {
+            this.errors.push(error);
+            this.showError = true;
+          });
+      } else {
+        axios
+          .post("person", this.form)
+          .then((response) => {
+            this.$router.push("/persons");            
+            this.$toast.success("Pessoa cadastrada com sucesso!");
+          })
+          .catch((error) => {
+            this.errors.push(error);
+            this.showError = true;
+          });
+      }
+    },
+
+    renderPerson(person) {
+      const data = {
+        name: person.name,
+        birth_date: person.birth_date,
+      };
+
+      if (person.locality) {
+        data["address"] = person.locality.address;
+        data["number"] = person.locality.number;
+        data["city"] = person.locality.city;
+        data["state"] = person.locality.state;
+        data["postal_code"] = person.locality.postal_code;
+        data["telephone"] = person.locality.telephone;
+      }
+
+      if (person.physical_characteristics) {
+        data["eye_color"] = person.physical_characteristics.eye_color;
+        data["hair_color"] = person.physical_characteristics.hair_color;
+        data["height"] = person.physical_characteristics.height;
+        data["weight"] = person.physical_characteristics.weight;
+        data["disabled_person"] =
+          person.physical_characteristics.disabled_person;
+        data["others"] = person.physical_characteristics.others;
+      }
+
+      if (person.important_informations) {
+        data["last_clothes"] = person.important_informations.last_clothes;
+        data["last_place"] = person.important_informations.last_place;
+      }
+
+      this.form = data;
     },
 
     handlingInformation() {
-      debugger;
       const locality = {
         address: this.form.address,
         number: this.form.number,
-        city:  this.form.city,
+        city: this.form.city,
         state: this.form.state,
         postal_code: this.form.postal_code,
         telephone: this.form.telephone,
       };
-      const physicalCharacteristics = {
+      const physical_characteristics = {
         eye_color: this.form.eye_color,
         hair_color: this.form.hair_color,
         height: this.form.height,
@@ -256,7 +304,7 @@ export default {
         last_place: this.form.last_place,
       };
 
-      this.form["physicalCharacteristics"] = physicalCharacteristics;
+      this.form["physical_characteristics"] = physical_characteristics;
       this.form["locality"] = locality;
       this.form["important_informations"] = important_informations;
     },
@@ -284,6 +332,17 @@ export default {
       var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
+
+    getPerson() {
+      axios(`/person?_id=${this.$route.params.id}`).then((response) => {
+        this.renderPerson(response.data[0]);
+      });
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.getPerson();
+    });
   },
 };
 </script>

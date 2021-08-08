@@ -4,7 +4,9 @@ const userController = require('../controllers/userController');
 const personController = require('../controllers/personController')
 const authController = require('../controllers/authController');
 const authService = require('../services/authenticationService');
-const multer = require('../lib/multer');
+const multer = require('multer');
+
+const upload = multer({ dest: './uploads/' });
 
 // User
 router.get('/user', authService.validationToken, userController.find);
@@ -18,8 +20,8 @@ router.post('/person', authService.validationToken, personController.create);
 router.post('/person/datatable', authService.validationToken, personController.dataTable);
 router.put('/person/:id', authService.validationToken, personController.update);
 router.delete('/person/:id', authService.validationToken, personController.remove);
-router.post('/person/image', authService.validationToken, multer.single("image"), personController.create);
 
+router.post('/person/image-upload', [authService.validationToken, upload.single('file')], personController.imageUpload);
 //Authentication
 router.post('/login', authController.authentication);
 

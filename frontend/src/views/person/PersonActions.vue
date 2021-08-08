@@ -1,24 +1,54 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-3">
-        <button type="button" class="btn btn-primary pr-5" style="width: 100%" v-on:click="edit">
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn btn-primary pr-5"
+          style="width: 100%"
+          v-on:click="edit"
+        >
           Editar
         </button>
       </div>
-      <div class="col-3">
-        <button type="button" class="btn btn-danger" style="width: 100%" v-on:click="remove">
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="width: 100%"
+          v-on:click="remove"
+        >
           Excluir
         </button>
       </div>
       <div class="col-3">
-        <button type="button" class="btn btn-danger" style="width: 100%" v-on:click="remove">
-          Gerar Cartas
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="width: 100%"
+          v-on:click="disclousure"
+        >
+          Gerar Informativo
         </button>
       </div>
-      <div class="col-3">
-        <button type="button" class="btn btn-danger" style="width: 100%" v-on:click="remove">
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="width: 100%"
+          v-on:click="remove"
+        >
           Copiar Link
+        </button>
+      </div>
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="width: 100%"
+          v-on:click="image"
+        >
+          Inserir Imagem
         </button>
       </div>
     </div>
@@ -41,14 +71,20 @@ export default {
   },
   methods: {
     async edit() {
-      this.$router.push(`persons/form?id=${this.row._id}`);
+      this.$router.push(`persons/form/${this.row._id}`);
     },
     async remove() {
-      await axios.delete(`person?id=${this.row._id}`);
+      await axios.delete(`person/${this.row._id}`);
+    },
+    async image() {
+      this.$router.push(`persons/image/${this.row._id}`);
+    },
+
+    disclousure() {
+      this.$router.push(`persons/disclosure/${this.row._id}`);
     },
 
     handlingInformation() {
-      debugger;
       const locality = {
         address: this.form.address,
         number: this.form.number,
