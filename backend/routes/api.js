@@ -16,7 +16,7 @@ router.delete('/user/:id', authService.validationToken, userController.remove);
 
 // Person
 router.get('/person', authService.validationToken, personController.find);
-router.post('/person', authService.validationToken, personController.create);
+router.post('/person', [authService.validationToken, upload.single('file')], personController.create);
 router.post('/person/datatable', authService.validationToken, personController.dataTable);
 router.put('/person/:id', authService.validationToken, personController.update);
 router.delete('/person/:id', authService.validationToken, personController.remove);

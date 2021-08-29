@@ -16,16 +16,16 @@ let update = function (req, res, next) {
     .catch(next);
 };
 
-let remove = function (req, res, next) {
+let remove = function (req, res, next) {  
   personService
-    .remove({ _id: req.params.id })
+    .remove(req.params.id)
     .then((user) => {
       res.send(user);
     })
     .catch(next);
 };
 
-let create = function (req, res, next) {
+let create = function (req, res, next) {        
   personService
     .create(req.body)
     .then((user) => {
@@ -34,8 +34,7 @@ let create = function (req, res, next) {
     .catch(next);
 };
 
-let dataTable = function (req, res, next) {
-  console.log(req.body);
+let dataTable = function (req, res, next) {  
   let find = {};
   if (req.body.search) {
     find["name"] = { $regex: ".*" + req.body.search + ".*" };
@@ -60,6 +59,7 @@ let dataTable = function (req, res, next) {
 
 let imageUpload = function (req, res, next) {
   const image = req.file;  
+  console.log(req.file);
   personService
     .find({ _id: req.body.id })
     .then((data) => {      

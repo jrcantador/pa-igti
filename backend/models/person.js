@@ -9,67 +9,63 @@ const Person = new Schema({
     type: Date,
     required: [true, "Campo obrigatório"],
   },
-  locality: {
-    address: {
-      type: String,
-    },
-    number: {
-      type: Number,
-    },
-    postal_code: {
-      type: String,
-    },
-    city: {
-      id: {
-        type: Number,
-      },
-      name: {
-        type: String,
-      }
-    },
-    state: {
-      id: {
-        type: Number,
-      },
-      name: {
-        type: String,
-      }  
-    },
-    telephone: {
-      type: String,
-      required: [true, "Campo obrigatório"]
-    },
+  address: {
+    type: String,
   },
-  physical_characteristics: {
-    eye_color: {
-      type: String,
-    },
-    hair_color: {
-      type: String,
-    },
-    without_hair: {
-      type: Boolean,
-    },
-    height: {
+  number: {
+    type: Number,
+  },
+  postal_code: {
+    type: String,
+  },
+  city: {
+    id: {
       type: Number,
     },
-    weight: {
-      type: Number,
-    },
-    disabled_person: {
-      type: String,
-    },
-    others: {
+    name: {
       type: String,
     },
   },
-  important_informations: {
-    last_clothes: {
+  state: {
+    id: {
+      type: Number,
+    },
+    name: {
       type: String,
     },
-    last_place: {
-      type: String,
-    },
+  },
+  telephone: {
+    type: String,
+    required: [true, "Campo obrigatório"],
+  },
+
+  eye_color: {
+    type: String,
+  },
+  hair_color: {
+    type: String,
+  },
+  without_hair: {
+    type: Boolean,
+  },
+  height: {
+    type: Number,
+  },
+  weight: {
+    type: Number,
+  },
+  disabled_person: {
+    type: String,
+  },
+  others: {
+    type: String,
+  },
+
+  last_clothes: {
+    type: String,
+  },
+  last_place: {
+    type: String,
   },
   image_id: {
     type: String,

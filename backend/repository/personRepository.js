@@ -10,8 +10,8 @@ let update = (id, body) => {
     return Person.findOneAndUpdate({ _id: id }, body);
 };
 
-let remove = (id) => {
-    return Person.findByIdAndRemove({ _id: id });
+let remove = (id) => {        
+    return Person.findByIdAndRemove({_id: id});
 };
 
 let create = (body) => {

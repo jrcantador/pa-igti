@@ -20,7 +20,7 @@
         <option value="50">50</option>
         <option value="100">100</option>
         <option value="500">500</option>
-      </select>      
+      </select>
     </div>
     <table id="datatable">
       <thead>
@@ -78,6 +78,7 @@
                 <component
                   v-bind:is="column.name"
                   v-bind:row="data"
+                  @refresh-list="refresh_list"
                 ></component>
               </span>
               <span v-else-if="column.type === 'clickable'">
@@ -168,6 +169,11 @@ export default {
     this.readData();
   },
   methods: {
+    refresh_list(payload) {      
+      if (payload.msg) {
+        this.search();
+      }
+    },
     currencyFormat(value, config) {
       return formatCurrency(value, config);
     },

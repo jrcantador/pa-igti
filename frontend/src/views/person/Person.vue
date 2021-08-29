@@ -1,12 +1,28 @@
 <template>
   <div class="container">
     <div>
-      <form novalidate>
+      <form novalidate enctype="multipart/form-data" name="form">
         <div v-if="errors.length" class="alert alert-warning" role="alert">
           <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
           <ul>
             <li v-for="error in errors" v-bind:key="error">{{ error }}</li>
           </ul>
+        </div>
+        <div class="row">
+          <div class="col-12 pt-2">
+            <div class="form-group">
+              <input
+                type="file"
+                name="file"
+                multiple
+                ref="files"
+                class="form-control-file"
+              />
+            </div>
+          </div>
+          <div class="col-12 pt-2" v-if="form.image_id">
+            <img :src="src" width="500" height="500" />
+          </div>
         </div>
         <div class="row">
           <div class="col-4">
@@ -217,96 +233,48 @@ export default {
       form: {},
       showError: false,
       errors: [],
+      src: "",
     };
   },
   methods: {
     async submit() {
-      this.handlingInformation();
-
       if (this.$route.params.id) {
-        axios
-          .put(`person/${this.$route.params.id}`, this.form)
-          .then((response) => {
-            this.$router.push("/persons");
-            this.$toast.success("Pessoa atualizada com sucesso!");
-          })
-          .catch((error) => {
-            this.errors.push(error);
-            this.showError = true;
-          });
+        try {
+          await axios.put(`person/${this.$route.params.id}`, this.form);
+
+          let img = this.$refs.files.files[0];
+          if (img) {
+            const formData = new FormData();
+            formData.append("id", this.$route.params.id);
+            formData.append("file", this.$refs.files.files[0]);
+            await axios.post("person/image-upload", formData);
+          }
+
+          this.$router.push("/persons");
+          this.$toast.success("Pessoa atualizada com sucesso!");
+        } catch (error) {
+          this.errors.push(error);
+          this.showError = true;
+        }
       } else {
-        axios
-          .post("person", this.form)
-          .then((response) => {
-            this.$router.push("/persons");            
-            this.$toast.success("Pessoa cadastrada com sucesso!");
-          })
-          .catch((error) => {
-            this.errors.push(error);
-            this.showError = true;
-          });
+        try {
+          let person = await axios.post("person", this.form);
+
+          let img = this.$refs.files.files[0];
+          if (img) {
+            const formData = new FormData();
+            formData.append("id", person.data._id);
+            formData.append("file", this.$refs.files.files[0]);
+            await axios.post("person/image-upload", formData);
+          }
+
+          this.$router.push("/persons");
+          this.$toast.success("Pessoa cadastrada com sucesso!");
+        } catch (error) {
+          this.errors.push(error);
+          this.showError = true;
+        }
       }
-    },
-
-    renderPerson(person) {
-      const data = {
-        name: person.name,
-        birth_date: person.birth_date,
-      };
-
-      if (person.locality) {
-        data["address"] = person.locality.address;
-        data["number"] = person.locality.number;
-        data["city"] = person.locality.city;
-        data["state"] = person.locality.state;
-        data["postal_code"] = person.locality.postal_code;
-        data["telephone"] = person.locality.telephone;
-      }
-
-      if (person.physical_characteristics) {
-        data["eye_color"] = person.physical_characteristics.eye_color;
-        data["hair_color"] = person.physical_characteristics.hair_color;
-        data["height"] = person.physical_characteristics.height;
-        data["weight"] = person.physical_characteristics.weight;
-        data["disabled_person"] =
-          person.physical_characteristics.disabled_person;
-        data["others"] = person.physical_characteristics.others;
-      }
-
-      if (person.important_informations) {
-        data["last_clothes"] = person.important_informations.last_clothes;
-        data["last_place"] = person.important_informations.last_place;
-      }
-
-      this.form = data;
-    },
-
-    handlingInformation() {
-      const locality = {
-        address: this.form.address,
-        number: this.form.number,
-        city: this.form.city,
-        state: this.form.state,
-        postal_code: this.form.postal_code,
-        telephone: this.form.telephone,
-      };
-      const physical_characteristics = {
-        eye_color: this.form.eye_color,
-        hair_color: this.form.hair_color,
-        height: this.form.height,
-        weight: this.form.weight,
-        disabled_person: this.form.disabled_person,
-        others: this.form.others,
-      };
-
-      const important_informations = {
-        last_clothes: this.form.last_clothes,
-        last_place: this.form.last_place,
-      };
-
-      this.form["physical_characteristics"] = physical_characteristics;
-      this.form["locality"] = locality;
-      this.form["important_informations"] = important_informations;
     },
 
     checkForm: function() {
@@ -335,13 +303,26 @@ export default {
 
     getPerson() {
       axios(`/person?_id=${this.$route.params.id}`).then((response) => {
-        this.renderPerson(response.data[0]);
+        this.form = response.data[0];
+        this.getImage();
+      });
+    },
+
+    async getImage() {      
+      axios.get(`person?_id=${this.$route.params.id}`).then((response) => {
+        let person = response.data[0];
+        const url = axios.defaults.baseURL.replace("api", "");
+        this.src = person.image_id
+          ? `${url}${person.image_id}`
+          : null;      
       });
     },
   },
   mounted() {
     this.$nextTick(() => {
-      this.getPerson();
+      if (this.$route.params.id) {
+        this.getPerson();
+      }
     });
   },
 };
