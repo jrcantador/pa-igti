@@ -15,8 +15,7 @@
         <button
           type="button"
           class="btn btn-danger"
-          style="width: 100%"
-          @refresh-list="refresh_list"
+          style="width: 100%"          
           v-on:click="remove"
         >
           Excluir

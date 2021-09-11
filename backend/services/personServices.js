@@ -12,8 +12,8 @@ const remove = (id) => {
     return personRepository.remove(id);
 }
 
-const find = (filters, sortField, sortKey) => {
-    return personRepository.find(filters, sortField, sortKey);
+const find = (filters, sortField, sortKey, skip, limit) => {
+    return personRepository.find(filters, sortField, sortKey, skip, limit);
 
 }
 

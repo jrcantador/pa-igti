@@ -1,6 +1,7 @@
 const personService = require("../services/personServices");
 
 let find = function (req, res, next) {
+  
   personService
     .find(req.query)
     .then((person) => {
@@ -35,13 +36,14 @@ let create = function (req, res, next) {
 };
 
 let dataTable = function (req, res, next) {  
+  console.log(req.body);
   let find = {};
   if (req.body.search) {
     find["name"] = { $regex: ".*" + req.body.search + ".*" };
   }
 
   personService
-    .find(find, req.body.sortedKey, req.body.sortedType)
+    .find(find, req.body.sortedKey, req.body.sortedType, req.body.skip, parseInt(req.body.take))
     .then((people) => {
       let json = {
         data: people,
@@ -58,8 +60,7 @@ let dataTable = function (req, res, next) {
 };
 
 let imageUpload = function (req, res, next) {
-  const image = req.file;  
-  console.log(req.file);
+  const image = req.file;    
   personService
     .find({ _id: req.body.id })
     .then((data) => {      

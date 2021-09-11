@@ -9,7 +9,7 @@
         v-on:keyup="search()"
         v-model="requestParams.search"
       />
-      <select
+      <!--<select
         class="form-control"
         v-model="showDataAmount"
         v-on:change="selectedDataAmount"
@@ -20,7 +20,7 @@
         <option value="50">50</option>
         <option value="100">100</option>
         <option value="500">500</option>
-      </select>
+      </select>-->
     </div>
     <table id="datatable">
       <thead>

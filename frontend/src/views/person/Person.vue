@@ -12,6 +12,7 @@
           <div class="col-12 pt-2">
             <div class="form-group">
               <input
+                @change="saveImage()"
                 type="file"
                 name="file"
                 multiple
@@ -224,6 +225,7 @@
 
 <script>
 import axios from "axios";
+import moment from 'moment'
 
 export default {
   name: "Person",
@@ -233,7 +235,7 @@ export default {
       form: {},
       showError: false,
       errors: [],
-      src: "",
+      src: ""
     };
   },
   methods: {
@@ -304,19 +306,29 @@ export default {
     getPerson() {
       axios(`/person?_id=${this.$route.params.id}`).then((response) => {
         this.form = response.data[0];
+        this.form.birth_date = moment(this.form.birth_date).add(1, "days").format('YYYY-MM-DD');
+        this.old_image_id = this.form.image_id;
         this.getImage();
       });
     },
 
-    async getImage() {      
+    async getImage() {
       axios.get(`person?_id=${this.$route.params.id}`).then((response) => {
         let person = response.data[0];
         const url = axios.defaults.baseURL.replace("api", "");
         this.src = person.image_id
           ? `${url}${person.image_id}`
-          : null;      
+          : null;
       });
     },
+
+    saveImage(){
+      let [file] = this.$refs.files.files;
+      if (file) {
+        this.src = URL.createObjectURL(file);
+      }
+    }
+
   },
   mounted() {
     this.$nextTick(() => {
