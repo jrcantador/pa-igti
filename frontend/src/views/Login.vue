@@ -1,18 +1,46 @@
 <template>
-  <div class="login">
-    <div>
-      <form @submit.prevent="submit">
-        <div>
-          <label for="username">Email:</label>
-          <input type="text" name="name" v-model="form.email" />
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card border-0 shadow rounded-3 my-5">
+          <div class="card-body p-4 p-sm-5">
+            <h5 class="card-title text-center mb-5 fw-light fs-5">Insira as informações de acesso</h5>
+            <form @submit.prevent="submit">
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="floatingInput"
+                  placeholder="name@example.com"
+                  v-model="form.email"
+                />
+                <label for="floatingInput">Email</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="floatingPassword"
+                  placeholder="Password"
+                  v-model="form.password"
+                />
+                <label for="floatingPassword">Senha</label>
+              </div>
+              <div class="form-floating mb-3">
+                <p v-if="showError" id="error">Email ou senha incorreta</p>
+              </div>
+              <div class="d-grid">
+                <button
+                  class="btn btn-login text-uppercase fw-bold"
+                  type="submit"
+                >
+                  Entrar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div>
-          <label for="password">Senha:</label>
-          <input type="password" name="password" v-model="form.password" />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      <p v-if="showError" id="error">Email ou senha incorreta</p>
+      </div>
     </div>
   </div>
 </template>
@@ -54,30 +82,17 @@ export default {
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+  background-color: #484848;
+  color: #fff
 }
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
+
+.btn-login:hover{  
+  color: #fbc531;  
 }
-button[type="submit"] {
-  background-color: #4caf50;
-  color: white;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 30px;
-}
-button[type="submit"]:hover {
-  background-color: #45a049;
-}
-input {
-  margin: 5px;
-  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
-  padding: 10px;
-  border-radius: 30px;
-}
-#error {
-  color: red;
-}
+
 </style>

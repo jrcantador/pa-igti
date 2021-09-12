@@ -27,27 +27,27 @@ const routes = [
     meta: { guest: true },
   },
   {
-    path: "/persons",
+    path: "/person",
     component: PersonList,
     meta: { requiresAuth: true },
   },
   {
-    path: "/persons/form",    
+    path: "/person/form",    
     component: Person,
     meta: { requiresAuth: true },
   },
   {
-    path: "/persons/form/:id",    
+    path: "/person/form/:id",    
     component: Person,
     meta: { requiresAuth: true },
   },
   {
-    path: "/persons/disclosure/:id",    
+    path: "/person/disclosure/:id",    
     component: PersonDisclosure,
     meta: { requiresAuth: true },
   }, 
   {
-    path: "/persons/image/:id",    
+    path: "/person/image/:id",    
     component: PersonImage,
     meta: { requiresAuth: true },
   } 

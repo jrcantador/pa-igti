@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     async edit() {
-      this.$router.push(`persons/form/${this.row._id}`);
+      this.$router.push(`person/form/${this.row._id}`);
     },
     async remove() {
       await axios.delete(`person/${this.row._id}`);
@@ -69,15 +69,15 @@ export default {
       this.$emit('refresh-list', { msg: true})    
     },
     async image() {
-      this.$router.push(`persons/image/${this.row._id}`);
+      this.$router.push(`person/image/${this.row._id}`);
     },
 
     disclousure() {
-      this.$router.push(`persons/disclosure/${this.row._id}`);
+      this.$router.push(`person/disclosure/${this.row._id}`);
     },
     copyToClipboard() {
       this.$toast.success("Link do informativo copiado!");
-      return `${window.location.host}/persons/disclosure/${this.row._id}`;
+      return `${window.location.host}/person/disclosure/${this.row._id}`;
     },
   },
 };
