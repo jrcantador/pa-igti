@@ -43,8 +43,7 @@ const routes = [
   },
   {
     path: "/person/disclosure/:id",    
-    component: PersonDisclosure,
-    meta: { requiresAuth: true },
+    component: PersonDisclosure    
   }, 
   {
     path: "/person/image/:id",    

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <button type="button" class="btn btn-primary" v-on:click="newPerson">
+    <button type="button" class="btn btn-new" v-on:click="newPerson">
       Novo
     </button>
     <DataTableInfo :options="tableOptions" ref="datatableInfo"/>
@@ -24,10 +24,12 @@ export default {
             title: "Nome",
             key: "name",
             type: "clickable",
-            uniqueField: "id",
+            uniqueField: "_id",
             sortable: true,
+            class: "col-6",
+            source: 'person/form'
           },
-          { title: "Action", type: "component", name: PersonActions },
+          { title: "Ações", type: "component", name: PersonActions , class: "col-6"},
         ],
         source: "person/datatable",
         search: true,
@@ -36,8 +38,24 @@ export default {
   },
   methods: {
     async newPerson() {
-      this.$router.push(`persons/form`);
+      this.$router.push(`person/form`);
     },  
   },
 };
 </script>
+
+<style scoped>
+
+.btn-new {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+  background-color: #484848;
+  color: #fff
+}
+
+.btn-new:hover{  
+  color: #fbc531;  
+}
+
+</style>

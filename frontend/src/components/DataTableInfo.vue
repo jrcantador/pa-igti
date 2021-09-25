@@ -1,10 +1,10 @@
 <template>
-  <div class="datatable">
+  <div class="datatable">    
     <div class="search">
       <input
         type="text"
         style="float:right"
-        placeholder="Search here"
+        placeholder="Procurar"
         id="search"
         v-on:keyup="search()"
         v-model="requestParams.search"
@@ -22,7 +22,7 @@
         <option value="500">500</option>
       </select>-->
     </div>
-    <table id="datatable">
+    <table id="datatable" >
       <thead>
         <th
           v-for="(column, columnIndex) in options.columns"
@@ -66,13 +66,14 @@
           </span>
         </th>
       </thead>
-      <tbody>
-        <template v-if="dataSets.length > 0">
+      <tbody>        
+        <template v-if="dataSets.length > 0">                    
           <tr v-for="(data, dataIndex) in dataSets" :key="dataIndex">
             <td
               v-for="(column, columnIndex) in options.columns"
               v-bind:key="columnIndex"
               v-bind:style="{ 'text-align': column.textAlign }"
+              v-bind:class="column.class"
             >
               <span v-if="column.type === 'component'">
                 <component
@@ -108,7 +109,7 @@
         </template>
         <template v-else>
           <div style="text-align: center">
-            No data found.
+            Nenhum registro encontrado.
           </div>
         </template>
       </tbody>
@@ -313,4 +314,7 @@ export default {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+
+
 </style>

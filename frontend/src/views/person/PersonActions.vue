@@ -4,7 +4,7 @@
       <div class="col-3">
         <button
           type="button"
-          class="btn btn-primary pr-5"
+          class="btn btn-default"
           style="width: 100%"
           v-on:click="edit"
         >
@@ -14,7 +14,7 @@
       <div class="col-3">
         <button
           type="button"
-          class="btn btn-danger"
+          class="btn btn-default"
           style="width: 100%"          
           v-on:click="remove"
         >
@@ -24,17 +24,17 @@
       <div class="col-3">
         <button
           type="button"
-          class="btn btn-danger"
+          class="btn btn-default"
           style="width: 100%"
           v-on:click="disclousure"
         >
-          Gerar Informativo
+          Informativo
         </button>
       </div>
       <div class="col-3">
         <button
           type="button"
-          class="btn btn-danger"
+          class="btn btn-default"
           style="width: 100%"
           v-clipboard="copyToClipboard"
         >
@@ -82,3 +82,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.btn-default {
+  font-size: 0.9rem;
+  background-color: #484848;
+  color: #fff
+}
+
+.btn-default:hover{  
+  color: #fbc531;  
+}
+</style>

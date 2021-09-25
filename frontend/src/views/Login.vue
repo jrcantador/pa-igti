@@ -70,7 +70,7 @@ export default {
         .then((res) => {
           this.$store.commit("setUser", res.data);
           this.$store.commit("setToken", res.data.token);
-          this.$router.push("/home");
+          this.$router.push("/");
           this.showError = false;
         })
         .catch((error) => {

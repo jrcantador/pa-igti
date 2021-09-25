@@ -1,6 +1,11 @@
 <template>
   <div class="container">
-    <div>
+    <div class="divButtonSubmit">
+      <button type="button" @click.prevent="checkForm()" class="btn btn-submit">
+        <i class="fas fa-save"></i>
+      </button>
+    </div>
+    <div class="card p-2">
       <form novalidate enctype="multipart/form-data" name="form">
         <div v-if="errors.length" class="alert alert-warning" role="alert">
           <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
@@ -21,8 +26,11 @@
               />
             </div>
           </div>
-          <div class="col-12 pt-2" v-if="form.image_id">
+          <div class="col-12 pt-2 pb-4" v-if="src">
             <img :src="src" width="500" height="500" />
+          </div>
+          <div class="col-12 pt-2 pb-4" v-if="!src">             
+            <img src="../../assets/sem-foto.png" width="500" height="500"/>
           </div>
         </div>
         <div class="row">
@@ -211,13 +219,6 @@
             </div>
           </div>
         </div>
-        <button
-          type="button"
-          @click.prevent="checkForm()"
-          class="btn btn-primary mt-5"
-        >
-          Cadastrar
-        </button>
       </form>
     </div>
   </div>
@@ -225,7 +226,7 @@
 
 <script>
 import axios from "axios";
-import moment from 'moment'
+import moment from "moment";
 
 export default {
   name: "Person",
@@ -235,7 +236,7 @@ export default {
       form: {},
       showError: false,
       errors: [],
-      src: ""
+      src: "",
     };
   },
   methods: {
@@ -252,7 +253,7 @@ export default {
             await axios.post("person/image-upload", formData);
           }
 
-          this.$router.push("/persons");
+          this.$router.push("/person");
           this.$toast.success("Pessoa atualizada com sucesso!");
         } catch (error) {
           this.errors.push(error);
@@ -306,7 +307,9 @@ export default {
     getPerson() {
       axios(`/person?_id=${this.$route.params.id}`).then((response) => {
         this.form = response.data[0];
-        this.form.birth_date = moment(this.form.birth_date).add(1, "days").format('YYYY-MM-DD');
+        this.form.birth_date = moment(this.form.birth_date)
+          .add(1, "days")
+          .format("YYYY-MM-DD");
         this.old_image_id = this.form.image_id;
         this.getImage();
       });
@@ -316,19 +319,16 @@ export default {
       axios.get(`person?_id=${this.$route.params.id}`).then((response) => {
         let person = response.data[0];
         const url = axios.defaults.baseURL.replace("api", "");
-        this.src = person.image_id
-          ? `${url}${person.image_id}`
-          : null;
+        this.src = person.image_id ? `${url}${person.image_id}` : null;
       });
     },
 
-    saveImage(){
+    saveImage() {
       let [file] = this.$refs.files.files;
       if (file) {
         this.src = URL.createObjectURL(file);
       }
-    }
-
+    },
   },
   mounted() {
     this.$nextTick(() => {
@@ -339,3 +339,25 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  padding-bottom: 5rem;
+}
+.divButtonSubmit {
+  position: fixed;
+  left: 10px;
+}
+
+.btn-submit {
+  font-size: 1.2rem;
+  padding: 0.75rem 1rem;
+  background-color: #484848;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.btn-submit:hover {
+  color: #fbc531;
+}
+</style>

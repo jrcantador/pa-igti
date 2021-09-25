@@ -16,30 +16,47 @@
         </button>
         <div class="collapse navbar-collapse" id="nvbCollapse">
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item pl-1">
-              <router-link class="nav-link" to="/"><i class="fa fa-home fa-fw mr-1"></i
-              > Home</router-link>
-            </li>
-            <li class="nav-item active pl-1" v-if="isLoggedIn">
-              <router-link class="nav-link" to="/person"
-                ><i class="fa fa-users fa-fw mr-1"></i> People</router-link                
+            <li
+              class="nav-item pl-1"
+              v-bind:class="{ active: pathActive == '/'}"
+            >
+              <router-link class="nav-link" to="/" @click.native="setPathActive"
+                ><i class="fa fa-home fa-fw mr-1"></i> Home</router-link
               >
             </li>
-            <li class="nav-item pl-1" v-if="isLoggedIn">
+            <li
+              class="nav-item pl-1"
+              v-if="isLoggedIn"
+              v-bind:class="{ active: pathActive == '/person' }"
+            >
+              <router-link
+                class="nav-link"
+                to="/person"
+                @click.native="setPathActive"
+                ><i class="fa fa-users fa-fw mr-1"></i> Pessoas</router-link
+              >
+            </li>
+            <li class="nav-item pl-1" v-if="isLoggedIn"  v-bind:class="{ active: pathActive == '/logout' }">
               <a @click="logout" class="nav-link" href="#"
-                ><i class="fa fa-sign-out-alt fa-fw mr-1"></i>Logout</a                
+                ><i class="fa fa-sign-out-alt fa-fw mr-1"></i>Sair</a
               >
             </li>
-            <li class="nav-item pl-1" v-if="!isLoggedIn">
-              <router-link class="nav-link" to="/register"
-                ><i class="fa fa-user-plus fa-fw mr-1"></i
-                > Register</router-link
+            <li class="nav-item pl-1" v-if="!isLoggedIn"  v-bind:class="{ active: pathActive == '/register' }">
+              <router-link
+                class="nav-link"
+                to="/register"
+                @click.native="setPathActive"
+                ><i class="fa fa-user-plus fa-fw mr-1"></i>
+                Registrar</router-link
               >
             </li>
-            <li class="nav-item pl-1" v-if="!isLoggedIn">
-              <router-link class="nav-link" to="/login"
-                ><i class="fa fa-sign-in-alt fa-fw fa-rotate-180 mr-1"></i
-                > Login</router-link                
+            <li class="nav-item pl-1" v-if="!isLoggedIn"  v-bind:class="{ active: pathActive == '/login' }">
+              <router-link
+                class="nav-link"
+                to="/login"
+                @click.native="setPathActive"
+                ><i class="fa fa-sign-in-alt fa-fw fa-rotate-180 mr-1"></i>
+                Entrar</router-link
               >
             </li>
           </ul>
@@ -51,6 +68,11 @@
 <script>
 export default {
   name: "NavBar",
+  data() {
+    return {
+      pathActive: "",
+    };
+  },
   computed: {
     isLoggedIn: function() {
       return this.$store.getters.currentUser;
@@ -58,9 +80,16 @@ export default {
   },
   methods: {
     async logout() {
+      this.pathActive = '/login';
       await this.$store.commit("setUser", null);
       this.$router.push("/login");
     },
+    setPathActive() {
+      this.pathActive = window.location.pathname;
+    },
+  },
+  mounted() {    
+    this.setPathActive();
   },
 };
 </script>
