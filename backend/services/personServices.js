@@ -12,7 +12,7 @@ const remove = (id) => {
     return personRepository.remove(id);
 }
 
-const find = (filters, sortField, sortKey, skip, limit) => {
+const find = (filters, sortField, sortKey, skip, limit) => {    
     return personRepository.find(filters, sortField, sortKey, skip, limit);
 
 }
