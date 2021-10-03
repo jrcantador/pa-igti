@@ -10,8 +10,6 @@ export default {
    name: "footer",
   data(){
     return{
-      mail : 'jrcantador@gmail.com',
-      phone : '(14) 99669-5962',
       mention : '2021 | Júnior Cantador'
     }
   }

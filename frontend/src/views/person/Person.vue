@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <div class="divButtonSubmit">
-      <button type="button" @click.prevent="checkForm()" class="btn btn-submit">
-        <i class="fas fa-save"></i>
-      </button>
-    </div>
     <div class="card p-2">
-      <form novalidate enctype="multipart/form-data" name="form">
+      <form
+        class="float-right"
+        novalidate
+        enctype="multipart/form-data"
+        name="form"
+      >
         <div v-if="errors.length" class="alert alert-warning" role="alert">
           <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
           <ul>
@@ -29,8 +29,8 @@
           <div class="col-12 pt-2 pb-4" v-if="src">
             <img :src="src" width="500" height="500" />
           </div>
-          <div class="col-12 pt-2 pb-4" v-if="!src">             
-            <img src="../../assets/sem-foto.png" width="500" height="500"/>
+          <div class="col-12 pt-2 pb-4" v-if="!src">
+            <img src="../../assets/sem-foto.png" width="500" height="500" />
           </div>
         </div>
         <div class="row">
@@ -219,6 +219,25 @@
             </div>
           </div>
         </div>
+        <div class="col-12 pt-2" style="text-align: right">
+          <div>
+            <button
+              type="button"
+              @click.prevent="cancel()"
+              class="btn btn-submit"
+              style="margin-right: 10px;"
+            >
+              <i class="fas fa-ban"></i> Cancelar
+            </button>
+            <button
+              type="button"
+              @click.prevent="checkForm()"
+              class="btn btn-submit"
+            >
+              <i class="fas fa-save"></i> Salvar
+            </button>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -254,7 +273,7 @@ export default {
           }
 
           this.$router.push("/person");
-          this.$toast.success("Pessoa atualizada com sucesso!");
+          this.$toast.success("Pessoa atualizada com sucesso!", {position: "top-right"});
         } catch (error) {
           this.errors.push(error);
           this.showError = true;
@@ -271,8 +290,8 @@ export default {
             await axios.post("person/image-upload", formData);
           }
 
-          this.$router.push("/persons");
-          this.$toast.success("Pessoa cadastrada com sucesso!");
+          this.$router.push("/person");
+          this.$toast.success("Pessoa cadastrada com sucesso!", {position: "top-right"});
         } catch (error) {
           this.errors.push(error);
           this.showError = true;
@@ -297,6 +316,7 @@ export default {
       if (!this.errors.length) {
         return this.submit();
       }
+      window.scrollTo(0, 0);
     },
 
     validEmail: function(email) {
@@ -323,6 +343,10 @@ export default {
       });
     },
 
+    cancel(){
+        this.$router.push("/person");
+    },
+
     saveImage() {
       let [file] = this.$refs.files.files;
       if (file) {
@@ -344,17 +368,13 @@ export default {
 .container {
   padding-bottom: 5rem;
 }
-.divButtonSubmit {
-  position: fixed;
-  left: 10px;
-}
 
 .btn-submit {
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 0.75rem 1rem;
   background-color: #484848;
   color: #fff;
-  border-radius: 50%;
+  border-radius: 5%;
 }
 
 .btn-submit:hover {

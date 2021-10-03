@@ -1,16 +1,15 @@
 <template>
-  <div v-if="person" class="container">
+  <div v-if="person" class="container card p-2 mt-2" style="text-align: left">
     <section>
-      <img
-        :src="src"
-        width="100"
-        height="100"
-      />
+      <img :src="src" width="500" height="500" v-if="src" />
+      <img src="../../assets/sem-foto.png" width="500" height="500" v-if="!src" />
     </section>
+
     <h3 class="pt-3">Informações Básicas</h3>
-    <label v-if="person.name">Nome: </label> {{ person.name }} <br />
-    <label v-if="person.birth_date">Data de nascimento: </label>
-    {{ formatDate(person.birth_date) }}<br />
+    <label v-if="person.name">Nome: {{ person.name }} </label><br />
+    <label v-if="person.birth_date"
+      >Data de nascimento: {{ formatDate(person.birth_date) }}<br />
+    </label>
     <div v-if="person.locality">
       <label v-if="person.locality.address">Endereço: </label>
       {{ person.locality.address }}<br />
@@ -76,7 +75,7 @@ export default {
   data() {
     return {
       person: null,
-      src: "",
+      src: null,
     };
   },
   methods: {
@@ -93,7 +92,9 @@ export default {
       axios.get(`person?_id=${this.$route.params.id}`).then((person) => {
         this.person = person.data[0];
         const url = axios.defaults.baseURL.replace("api", "");
-        this.src = `${url}${this.person.image_id}`;
+        if (this.person.image_id) {
+          this.src = `${url}${this.person.image_id}`;
+        } 
       });
     },
   },
