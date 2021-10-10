@@ -2,8 +2,7 @@ const Person = require("../models/person");
 
 let find = (filters, sortField, sortKey, skip, limit) => {
   const sort = {};
-  sort[sortField] = sortKey;
-  console.log(sort);
+  sort[sortField] = sortKey;  
   return Person.find(filters, null, { sort: sort, skip: skip, limit: limit });
 };
 

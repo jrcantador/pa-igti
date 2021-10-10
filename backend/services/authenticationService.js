@@ -11,8 +11,7 @@ const validationToken = (req, res, next) => {
     });
 }
 
-const authentication = (req, res, next) => {            
-    console.log(req.body.email)        
+const authentication = (req, res, next) => {                
     User.find({ email: req.body.email, password: req.body.password })        
         .then(user => {  
             if (user.length > 0) {                              

@@ -35,8 +35,7 @@ let create = function (req, res, next) {
     .catch(next);
 };
 
-let dataTable = function (req, res, next) {  
-  console.log(req.body);
+let dataTable = function (req, res, next) {    
   let find = {};
   if (req.body.search) {
     find["name"] = { $regex: ".*" + req.body.search + ".*" };

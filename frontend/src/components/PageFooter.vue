@@ -7,7 +7,7 @@
 </template>
 <script>
 export default {
-   name: "footer",
+   name: "PageFooter",
   data(){
     return{
       mention : '2021 | Júnior Cantador'

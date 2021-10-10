@@ -67,7 +67,7 @@
 </template>
 <script>
 export default {
-  name: "NavBar",
+  name: "PageHead",
   data() {
     return {
       pathActive: "",

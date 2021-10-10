@@ -1,6 +1,7 @@
 <template>
-  <div class="container">    
-    <div>
+  <div class="container">
+    <h1>Informações de Usuário</h1>
+    <div class="card p-2">
       <form novalidate>
         <div v-if="errors.length" class="alert alert-warning" role="alert">
           <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
@@ -127,12 +128,12 @@ import axios from "axios";
 export default {
   name: "Register",
   components: {},
-  props: ['row'],
+  props: ["row"],
   data() {
     return {
       form: {},
       showError: false,
-      errors: []      
+      errors: [],
     };
   },
   methods: {

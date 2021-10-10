@@ -1,17 +1,17 @@
 <template>
-  <div id="app">
-    <NavBar />
+  <div id="app">     
+    <PageHead />
     <router-view />
-    <Footer />
+    <PageFooter />
   </div>
 </template>
 <script>  
-import NavBar from "./components/NavBar.vue";
-import Footer from "./components/Footer.vue";
+import PageHead from "./components/PageHead.vue";
+import PageFooter from "./components/PageFooter.vue";
 export default {
   components: {
-    NavBar,
-    Footer
+    PageHead,
+    PageFooter
   },
 };
 </script>

@@ -93,22 +93,22 @@
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="city">Estado:</label>
-              <select v-model="form.state" class="form-select">
-                <option v-bind:value="{ id: 1, name: 'São Paulo' }"
-                  >São Paulo</option
-                >
-              </select>
+              <SelectStates
+                :model="form.state"
+                :selected="form.state"
+                @change="refreshSelectCities($event)"
+              />
             </div>
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="state">Cidade:</label>
-              <select v-model="form.city" class="form-select">
-                <option v-bind:value="{ id: 1, name: 'Barra Bonita' }"
-                  >Barra Bonita</option
-                >
-              </select>
+              <SelectCities
+                :model="form.city"
+                :uf="form.state"
+                @change="form.city = $event"
+                :selected="form.city"
+                ref="selectCities"
+              />
             </div>
           </div>
           <div class="col-4">
@@ -246,10 +246,12 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import SelectCities from "../../components/SelectCities.vue";
+import SelectStates from "../../components/SelectStates.vue";
 
 export default {
   name: "Person",
-  components: {},
+  components: { SelectCities, SelectStates },
   data() {
     return {
       form: {},
@@ -273,7 +275,9 @@ export default {
           }
 
           this.$router.push("/person");
-          this.$toast.success("Pessoa atualizada com sucesso!", {position: "top-right"});
+          this.$toast.success("Pessoa atualizada com sucesso!", {
+            position: "top-right",
+          });
         } catch (error) {
           this.errors.push(error);
           this.showError = true;
@@ -291,7 +295,9 @@ export default {
           }
 
           this.$router.push("/person");
-          this.$toast.success("Pessoa cadastrada com sucesso!", {position: "top-right"});
+          this.$toast.success("Pessoa cadastrada com sucesso!", {
+            position: "top-right",
+          });
         } catch (error) {
           this.errors.push(error);
           this.showError = true;
@@ -324,15 +330,14 @@ export default {
       return re.test(email);
     },
 
-    getPerson() {
-      axios(`/person?_id=${this.$route.params.id}`).then((response) => {
-        this.form = response.data[0];
-        this.form.birth_date = moment(this.form.birth_date)
-          .add(1, "days")
-          .format("YYYY-MM-DD");
-        this.old_image_id = this.form.image_id;
-        this.getImage();
-      });
+    async getPerson() {
+      let response = await axios(`/person?_id=${this.$route.params.id}`);
+      this.form = response.data[0];
+      this.form.birth_date = moment(this.form.birth_date)
+        .add(1, "days")
+        .format("YYYY-MM-DD");
+      this.old_image_id = this.form.image_id;
+      this.getImage();
     },
 
     async getImage() {
@@ -343,8 +348,8 @@ export default {
       });
     },
 
-    cancel(){
-        this.$router.push("/person");
+    cancel() {
+      this.$router.push("/person");
     },
 
     saveImage() {
@@ -353,13 +358,15 @@ export default {
         this.src = URL.createObjectURL(file);
       }
     },
+    async refreshSelectCities(event) {            
+      this.form.state = event;      
+      this.$refs.selectCities.getData(event);
+    },
   },
-  mounted() {
-    this.$nextTick(() => {
-      if (this.$route.params.id) {
-        this.getPerson();
-      }
-    });
+  async mounted() {
+    if (this.$route.params.id) {
+      await this.getPerson();            
+    }
   },
 };
 </script>
