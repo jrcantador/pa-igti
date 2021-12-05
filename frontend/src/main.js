@@ -3,21 +3,26 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm';
+import VueTheMask from 'vue-the-mask'
+import VueToast from 'vue-toast-notification';
+import Clipboard from 'v-clipboard'
+ 
+
+import 'vue-toast-notification/dist/theme-sugar.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
+
+Vue.use(VueTheMask)
+Vue.use(BootstrapVue);
+Vue.use(VueToast);
+Vue.use(Clipboard)
+
 
 axios.defaults.baseURL = 'http://localhost:5000/api';
-
-axios.interceptors.response.use(undefined, function (error) {
-  if (error) {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-  
-        originalRequest._retry = true;
-        store.dispatch('LogOut')
-        return router.push('/login')
-    }
-  }
-})
-
 
 new Vue({
   store,

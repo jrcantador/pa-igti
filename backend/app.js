@@ -4,18 +4,20 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-var cors = require('cors')
+
+let cors = require('cors')
 require("dotenv-safe").config();
 
 app.use(cors())
+app.use( express.static( "uploads" ) );
+
 
 let port = 5000;
 app.use(bodyParser.json());
 app.use('/api', routes);
 
-app.use(function (err, req, res, next) {
-    console.log(err);
-    res.status(422).send({ error: err.message });
+app.use(function (err, req, res, next) {    
+    res.status(422).send({ status: 422, message: err.message });
 });
 app.listen(process.env.port || port, () => {
     console.log('Servidor em execução no porta: ' + port);
@@ -23,12 +25,12 @@ app.listen(process.env.port || port, () => {
 app.get('/', function (req, res) {
     res.send('END POINT INVÁLIDO!');
 });
-mongoose.connect('mongodb://localhost/cad');
 
-mongoose.connection.on('connected', function () {
-    console.log('Connected to Database ' + 'test');
-});
-mongoose.connection.on('error', (err) => {
-    console.log('Database error ' + err);
-});
+
+var mongoDB = 'mongodb://localhost/cad';
+mongoose.connect(mongoDB, { useNewUrlParser: true });
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 

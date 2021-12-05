@@ -1,19 +1,23 @@
 <template>
-  <div id="app">
-    <NavBar />
+  <div id="app">     
+    <PageHead />
     <router-view />
+    <PageFooter />
   </div>
 </template>
-<script>
-import NavBar from "./components/NavBar.vue";
+<script>  
+import PageHead from "./components/PageHead.vue";
+import PageFooter from "./components/PageFooter.vue";
 export default {
   components: {
-    NavBar,
+    PageHead,
+    PageFooter
   },
 };
 </script>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
