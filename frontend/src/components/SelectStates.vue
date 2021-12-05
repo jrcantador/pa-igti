@@ -24,7 +24,7 @@ export default {
   name: "SelectStates",
   data() {
     return {
-      firstOption: this.first ? this.first : "Selecione uma Cidade",
+      firstOption: this.first ? this.first : "Selecione um Estado",
       selects: [],
     };
   },

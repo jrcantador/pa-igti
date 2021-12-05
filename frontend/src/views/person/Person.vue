@@ -43,7 +43,6 @@
                 name="name"
                 v-model="form.name"
               />
-              {{ this.form.name }}
             </div>
           </div>
           <div class="col-4">
@@ -148,7 +147,7 @@
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="name">Altura:</label>
+              <label for="name"> Altura (cm):</label>
               <input
                 type="text"
                 class="form-control"
@@ -159,7 +158,7 @@
           </div>
           <div class="col-4">
             <div class="form-group">
-              <label for="name">Peso:</label>
+              <label for="name">Peso (kg):</label>
               <input
                 type="text"
                 class="form-control"
